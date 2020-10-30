@@ -37,7 +37,7 @@ class ModelInitializer(BaseModelInitializer):
         # Set the num_inter_threads and num_intra_threads
         self.set_num_inter_intra_threads()
         # Set env vars, if they haven't already been set
-        set_env_var("OMP_NUM_THREADS", self.args.num_intra_threads, overwrite_existing=True)
+        set_env_var("OMP_NUM_THREADS", self.args.num_intra_threads, overwrite_existing=False)
 
     def parse_args(self):
         parser = argparse.ArgumentParser()
@@ -49,10 +49,10 @@ class ModelInitializer(BaseModelInitializer):
             "--steps", dest="steps",
             help="number of steps",
             type=int, default=50)
-        parser.add_argument(
-            '--kmp-blocktime', dest='kmp_blocktime',
-            help='number of kmp block time',
-            type=int, default=1)
+        #parser.add_argument(
+        #    '--kmp-blocktime', dest='kmp_blocktime',
+        #    help='number of kmp block time',
+        #    type=int, default=1)
         parser.add_argument(
             "--calibration-only",
             help="Calibrate the accuracy.",
@@ -68,9 +68,8 @@ class ModelInitializer(BaseModelInitializer):
 
         # Set KMP env vars, if they haven't already been set, but override the default KMP_BLOCKTIME value
         config_file_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), "config.json")
-        self.set_kmp_vars(config_file_path, kmp_blocktime=str(self.args.kmp_blocktime))
-
-        set_env_var("OMP_NUM_THREADS", self.args.num_intra_threads)
+        #self.set_kmp_vars(config_file_path, kmp_blocktime=str(self.args.kmp_blocktime))
+        self.set_kmp_vars(config_file_path)
 
     def run_benchmark_or_accuracy(self):
         cmd = os.path.join(

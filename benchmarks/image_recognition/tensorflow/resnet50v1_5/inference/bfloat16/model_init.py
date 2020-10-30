@@ -54,16 +54,17 @@ class ModelInitializer(BaseModelInitializer):
         arg_parser.add_argument("--steps", dest='steps',
                                 type=int, default=50,
                                 help="number of steps")
-        arg_parser.add_argument(
-            '--kmp-blocktime', dest='kmp_blocktime',
-            help='number of kmp block time',
-            type=int, default=1)
+        #arg_parser.add_argument(
+        #    '--kmp-blocktime', dest='kmp_blocktime',
+        #    help='number of kmp block time',
+        #    type=int, default=1)
 
         self.args = arg_parser.parse_args(self.custom_args, namespace=self.args)
 
         # Set KMP env vars, if they haven't already been set, but override the default KMP_BLOCKTIME value
         config_file_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), "config.json")
-        self.set_kmp_vars(config_file_path, kmp_blocktime=str(self.args.kmp_blocktime))
+        #self.set_kmp_vars(config_file_path, kmp_blocktime=str(self.args.kmp_blocktime))
+        self.set_kmp_vars(config_file_path)
 
         set_env_var("OMP_NUM_THREADS", self.args.num_intra_threads)
 
